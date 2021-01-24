@@ -21,7 +21,7 @@ public class TradeScheduler {
     public void reportCurrentTime() {
         ObjectMapper mapper = new ObjectMapper();
         try {
-            QuoteHistoryChartDto quoteChartHistory = historyService.getHistory("EICHERMOT.NS", "1d", "1mo", true);
+            QuoteHistoryChartDto quoteChartHistory = historyService.getHistory("%5ENSEI", "1m", "1d", true);
             String data = mapper.writeValueAsString(quoteChartHistory);
             logger.info("The data is now {}", data);
         } catch (JsonProcessingException e) {

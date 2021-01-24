@@ -15,6 +15,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
+import java.nio.file.FileSystems;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
@@ -66,24 +67,24 @@ public class HistoryService {
     }
 
     public void writeDataToFile(QuoteHistoryChartDto quoteHistoryChartDto) {
-        String currTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss.SSS"));
+        String currTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MMdd.HHmm.ss"));
         logger.debug("Time is - {}", currTime);
         try {
-            URL historicalDataFolder = this.getClass().getClassLoader().getResource("historical_data");
-            File historicalDataFile = null;
-            if (historicalDataFolder != null) {
-                logger.debug("##### - {}", historicalDataFolder.getPath());
-                 historicalDataFile = new File(
-                         historicalDataFolder.getPath().concat("/TradeData.") +
-                                quoteHistoryChartDto.getChart().getResult()[0].getMeta().getSymbol() + "." +
-                                currTime +
-                                ".csv"
-                );
-            } else {
-                logger.debug("historical_data folder does not exist in resources folder.");
+            String historicalDataPath = System.getProperty("user.home").concat(File.separator + "historical_data");
+            File directory = new File(historicalDataPath);
+            if (! directory.exists()){
+                boolean status = directory.mkdir();
+                logger.debug("Directory Creation status - {}", status);
             }
+            logger.debug("System Home Path is - {}", historicalDataPath);
+            File historicalDataFile = new File(
+                    historicalDataPath.concat(File.separator + "TradeData.") +
+                            quoteHistoryChartDto.getChart().getResult()[0].getMeta().getSymbol() + "." +
+                            currTime +
+                            ".csv"
+            );
 
-            if (historicalDataFile != null && historicalDataFile.createNewFile()) {
+            if (historicalDataFile.createNewFile()) {
                 logger.debug("File Created - {}", historicalDataFile.getName());
                 try (FileWriter fw = new FileWriter(historicalDataFile)) {
                     fw.write(FILE_HEADER);
