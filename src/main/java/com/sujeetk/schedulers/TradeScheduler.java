@@ -17,7 +17,7 @@ public class TradeScheduler {
     @Autowired
     private HistoryService historyService;
 
-    @Scheduled(cron = "0 45 15 ? * MON-FRI")
+    @Scheduled(cron = "0 45 15 ? * MON-FRI", zone="Asia/Kolkata")
     public void reportCurrentTime() {
         ObjectMapper mapper = new ObjectMapper();
         try {

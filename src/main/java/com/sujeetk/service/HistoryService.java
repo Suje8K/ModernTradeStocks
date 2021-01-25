@@ -14,9 +14,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URI;
-import java.net.URL;
-import java.nio.file.FileSystems;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 
@@ -67,7 +66,8 @@ public class HistoryService {
     }
 
     public void writeDataToFile(QuoteHistoryChartDto quoteHistoryChartDto) {
-        String currTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MMdd.HHmm.ss"));
+        ZoneId istZone = ZoneId.of("Asia/Kolkata");
+        String currTime = LocalDateTime.now(istZone).format(DateTimeFormatter.ofPattern("yyyy.MMdd.HHmm.ss"));
         logger.debug("Time is - {}", currTime);
         try {
             String historicalDataPath = System.getProperty("user.home").concat(File.separator + "historical_data");
