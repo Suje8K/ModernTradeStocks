@@ -40,7 +40,7 @@ public class HistoryService {
         if (! rangeBool && intervalBool) {
             return new QuoteHistoryChartDto();
         } else {
-
+            logger.debug("Stock Name is - {}", quoteName);
             UriComponentsBuilder builder = UriComponentsBuilder.newInstance()
                     .scheme("https")
                     .host(YahooConstants.YAHOO_FINANCE_BASE_URL)
